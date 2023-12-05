@@ -7,7 +7,9 @@ authors:
   - lyf
 description: Chrome is deprecating access to private network endpoints from non-secure public websites as part of the Private Network Access specification. Read on for recommended actions.
 date: 2022-01-06
-updated: 2022-07-26
+updated: 2023-02-10
+is_outdated: true
+new_available_content_url: /blog/private-network-access-update
 hero: image/VbsHyyQopiec0718rMq2kTE1hke2/iqanYAE91Ab6BsgwhBjq.jpg
 alt: An airplane in the sky
 tags:
@@ -19,7 +21,7 @@ tags:
 
 **Updates**
 
-- **July 7, 2022**: Updated current status and add IP address space defination.
+- **July 7, 2022**: Updated current status and added IP address space definition.
 - **April 27, 2022**: Updated timeline announcement.
 - **March 7, 2022**: Announced rollback after issues were discovered in
   Chrome 98.
@@ -32,7 +34,7 @@ websites as part of the
 specification.
 
 Chrome will start sending a CORS preflight request ahead of any [private
-network request](#what-is-private-network-access) for a subresource, which asks
+network request](#what-is-private-network-access-pna) for a subresource, which asks
 for explicit permission from the target server. This preflight request will
 carry a new header, `Access-Control-Request-Private-Network: true`, and the
 response to it must carry a corresponding header,
@@ -67,7 +69,7 @@ the change and adjust accordingly.
     seconds.
     {% endAside %}
 
-2. In Chrome 107 at the earliest:
+2. In Chrome 113 at the earliest:
     * This will begin _only_ if and when compatibility data indicates that the
       change is safe enough and we've outreached directly when necessary.
     * Chrome enforces that preflight requests must succeed, otherwise failing
@@ -89,7 +91,7 @@ The identified issues were fixed for Chrome 104.
 ## What is Private Network Access (PNA)
 
 [Private Network Access](https://wicg.github.io/private-network-access/)
-(formerly known as [CORS-RFC1918](https://web.dev/cors-rfc1918-feedback/))
+(formerly known as [CORS-RFC1918](https://web.dev/articles/cors-rfc1918-feedback))
 restricts the ability of websites to send requests to servers on private
 networks.
 
@@ -108,9 +110,9 @@ a request from a public website (`https://example.com`) to a private website
 (`http://router.local`), or a request from a private website to localhost.
 {% endAside %}
 
-### How does PNA classify IP addresses and identify a private network 
+### How does PNA classify IP addresses and identify a private network
 
-The IP addresses are classified into three IP address spaces: 
+The IP addresses are classified into three IP address spaces:
 - `public`
 - `private`
 - `local`
@@ -146,7 +148,7 @@ is considered more private than a public IP address.
   </figcaption>
 </figure>
 
-Learn more at [Feedback wanted: CORS for private networks (RFC1918)](https://web.dev/cors-rfc1918-feedback/).
+Learn more at [Feedback wanted: CORS for private networks (RFC1918)](https://web.dev/articles/cors-rfc1918-feedback).
 
 ## Preflight requests
 

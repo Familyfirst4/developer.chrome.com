@@ -62,7 +62,7 @@ const algoliaCollection = collections => {
       data.disable_algolia ||
       data.noindex ||
       data.draft ||
-      data.permalink === false
+      (data.permalink === false && Boolean(data.isVirtualItem) === false)
     ) {
       return false;
     }
@@ -71,20 +71,23 @@ const algoliaCollection = collections => {
   });
 
   return toIndex.map(item => {
-    const image = item.data.hero
-      ? generateImgixSrc(item.data.hero, {w: 100, auto: 'format'})
-      : '';
+    let image = item.data.thumbnail ?? item.data.hero;
+    if (image) {
+      image = generateImgixSrc(image, {w: 100, auto: 'format'});
+    }
+
+    const url = item.data.deepLink || item.url;
 
     /** @type {AlgoliaCollectionItem} */
     const algoliaCollectionItem = {
       title: item.data.title,
       description: item.data.description,
       content: undefined,
-      url: stripDefaultLocale(item.url),
+      url: stripDefaultLocale(url),
       tags: [item.data.tags ?? []].flat(),
       locale: item.data.locale,
       image,
-      objectID: createHash('md5').update(item.url).digest('hex'),
+      objectID: createHash('md5').update(url).digest('hex'),
     };
 
     // The item is dumped to JSON, but we can't get at the underlying post's

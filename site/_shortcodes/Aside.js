@@ -1,4 +1,5 @@
 const fs = require('fs');
+const path = require('path');
 const {i18n} = require('../_filters/i18n');
 
 const defaultLocale = 'en';
@@ -9,18 +10,23 @@ const defaultLocale = 'en';
  * load.
  * @return {string} The SVG file contents.
  */
-const loadIcon = name =>
-  fs.readFileSync(`site/_includes/icons/${name}.svg`, 'utf-8');
+function loadIcon(name) {
+  const iconPath = path.resolve(
+    path.join(__dirname, `../_includes/icons/${name}.svg`)
+  );
+  return fs.readFileSync(iconPath, 'utf-8');
+}
 
 const icons = {
   caution: loadIcon('error'),
   warning: loadIcon('warning'),
   success: loadIcon('done'),
   objective: loadIcon('done'),
-  gotchas: loadIcon('lightbulb-outline'),
   important: loadIcon('lightbulb-outline'),
   'key-term': loadIcon('ink-highlighter'),
   codelab: loadIcon('code'),
+  example: loadIcon('graph'),
+  update: loadIcon('update'),
 };
 
 /**
@@ -32,6 +38,12 @@ function Aside(content, type = 'note') {
   // @ts-ignore: `this` has type of `any`
   const locale = this.ctx.locale || defaultLocale;
   let text;
+
+  // implement backwards compatibility for old "gotchas" type, rewrite to "important" type
+  if (type === 'gotchas') {
+    type = 'important';
+  }
+
   if (type !== 'note') {
     text = i18n(`i18n.common.${type}`, locale);
   }
